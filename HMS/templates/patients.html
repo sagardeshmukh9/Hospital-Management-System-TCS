@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.page-link {
+    color: #000000;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
+.page-link:hover {
+    color: #000000;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+.row{
+    font-size: 15px;
+}
+</style>
+
+
+<div>
+
+    <div class="float-md-left mx-3 my-3">
+     <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#AddPatient">+ Register Patient</button>
+                      <!-- Modal -->
+                        <div class="modal fade" id="AddPatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel3" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel3">Register Patient</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <form action="{{ url_for('add_patient') }}" method="POST">
+                                  <div class="modal-body">
+
+                                          {{ Cform.hidden_tag() }}
+
+                                        <div class="form-group">
+                                          {{ Cform.ws_ssn(class="form-control", placeholder="SSN id") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_pat_id(class="form-control", placeholder="Patient id") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_pat_name(class="form-control", placeholder="Name") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_adrs(class="form-control", placeholder="Address") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_state(class="form-control", placeholder="State") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_city(class="form-control", placeholder="City") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_age(class="form-control", placeholder="Age") }}
+                                        </div>
+                                        <div class="form-group">
+                                          {{ Cform.ws_doj(class="form-control", placeholder="DOJ") }}
+                                        </div>
+                                        <div class="form-group">
+                                            {{ Cform.ws_rtype(class="form-control")}}
+                                        </div>
+
+
+
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    {{ Cform.submit(class = "btn btn-info") }}
+                                  </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+    </div>
+
+    <div class="float-md-right mx-3 my-3">
+        <form class="form-inline" action="{{ url_for('search') }}" method="POST">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" name="patient_id">
+            <button class="btn btn-secondary" type="submit">Search</button>
+        </form>
+
+    </div>
+
+</div>
+
+{%if pat%}
+<br><br><br>
+<div class="container float-left mx-5" style="width:800px">
+    <div class="card m-0">
+        <div class="card-header p-0">
+            <center><b><p>Patient ID : {{ pat.ws_pat_id }}</p></b></center>
+        </div>
+        <div class="card-content p-2">
+            <p>SSN ID :{{ pat.ws_ssn }}</p>
+            <p>Name :{{ pat.ws_pat_name }}</p>
+            <p>Address :{{ pat.ws_adrs }}</p>
+            <p>State :{{ pat.ws_state }}</p>
+            <p>City :{{ pat.ws_city }}</p>
+            <p>Age :{{ pat.ws_age }}</p>
+            <p>Date of Joining :{{ pat.ws_doj }}</p>
+            <p>Room type :{{ pat.ws_rtype }}</p>
+        </div>
+        <div class="card-footer bg-white">
+            <div class="float-md-right">
+                <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#Update2">
+                      Update
+                    </button>
+                  <!-- Modal -->
+                    <div class="modal fade" id="Update2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel2">Update Patient's Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form action="{{ url_for('update_patient_info') }}" method="POST">
+                              <div class="modal-body">
+
+                                      {{ Uform.hidden_tag() }}
+                                      {{ Uform.ws_pat_id(class="form-control",value= pat.ws_pat_id, type="hidden") }}
+                                       <p>Patient ID : {{ pat.ws_pat_id }} </p>
+                                       <p>SSN ID : {{ pat.ws_ssn }}</p>
+                                    <div class="form-group">
+                                      {{ Uform.ws_pat_name.label }}
+                                      {{ Uform.ws_pat_name(class="form-control", value = pat.ws_pat_name) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_adrs.label }}
+                                      {{ Uform.ws_adrs(class="form-control", value = pat.ws_adrs) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_state.label }}
+                                      {{ Uform.ws_state(class="form-control", value = pat.ws_state) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_city.label }}
+                                      {{ Uform.ws_city(class="form-control", value = pat.ws_adrs) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_age.label }}
+                                      {{ Uform.ws_age(class="form-control", value = pat.ws_age) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_doj.label }}
+                                      {{ Uform.ws_doj(class="form-control", value = pat.ws_doj) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_rtype.label }}
+                                      {{ Uform.ws_rtype(class="form-control", value = pat.ws_rtype) }}
+                                    </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                {{ Uform.submit(class = "btn btn-info") }}
+                              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button class="btn btn-sm btn-info">Discharge</button>
+
+                    <!-- Button trigger modal - Delete Operation -->
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeletePatient2">Delete</button>
+                  <!-- Modal -->
+                    <div class="modal fade" id="DeletePatient2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel5" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel5">Delete Patient's Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form action="{{ url_for('delete_patient', p=p) }}" method="POST">
+                              <div class="modal-body">
+                                      <input type="hidden" name="patient_id" value="{{ pat.ws_pat_id }}">
+                                      <div class="card-content p-2">
+                                          <p><b>Patient ID :</b>{{ pat.ws_pat_id }}</p>
+                                            <p><b>SSN ID :</b>{{ pat.ws_ssn }}</p>
+                                            <p><b>Name :</b>{{ pat.ws_pat_name }}</p>
+                                            <p><b>Address :</b>{{ pat.ws_adrs }}</p>
+                                            <p><b>State :</b>{{ pat.ws_state }}</p>
+                                            <p><b>City :</b>{{ pat.ws_city }}</p>
+                                            <p><b>Age :</b>{{ pat.ws_age }}</p>
+                                            <p><b>Date of Joining :</b>{{ pat.ws_doj }}</p>
+                                            <p><b>Room type :</b>{{ pat.ws_rtype }}</p>
+                                      </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger" >Confirm</button>
+                              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+{% else %}
+<br>
+<div class="container my-5" id="table" style="font-size:15px;">
+        <table class="table table-bordered table-fluid" id="myTable" >
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">SSN_id</th>
+              <th scope="col">Patient_id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Age</th>
+              <th scope="col">Date_of_Joining</th>
+              <th scope="col">Room type</th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for p in patients %}
+            <tr>
+              <th>{{ p.ws_ssn }}</th>
+              <td>{{ p.ws_pat_id }}</td>
+              <td>{{ p.ws_pat_name }}</td>
+              <td>{{ p.ws_adrs }}</td>
+              <td>{{ p.ws_age }}</td>
+              <td>{{ p.ws_doj }}</td>
+              <td>{{ p.ws_rtype }}</td>
+              <td>
+                  <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
+                      Update
+                    </button>
+                  <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Update Patient's Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form action="{{ url_for('update_patient_info') }}" method="POST">
+                              <div class="modal-body">
+
+                                      {{ Uform.hidden_tag() }}
+                                      {{ Uform.ws_pat_id(class="form-control",value= p.ws_pat_id, type="hidden") }}
+                                       <p>Patient ID : {{ p.ws_pat_id }} </p>
+                                       <p>SSN ID : {{ p.ws_ssn }}</p>
+                                    <div class="form-group">
+                                      {{ Uform.ws_pat_name.label }}
+                                      {{ Uform.ws_pat_name(class="form-control", value = p.ws_pat_name) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_adrs.label }}
+                                      {{ Uform.ws_adrs(class="form-control", value = p.ws_adrs) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_state.label }}
+                                      {{ Uform.ws_state(class="form-control", value = p.ws_state) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_city.label }}
+                                      {{ Uform.ws_city(class="form-control", value = p.ws_adrs) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_age.label }}
+                                      {{ Uform.ws_age(class="form-control", value = p.ws_age) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_doj.label }}
+                                      {{ Uform.ws_doj(class="form-control", value = p.ws_doj) }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ Uform.ws_rtype.label }}
+                                      {{ Uform.ws_rtype(class="form-control", value = p.ws_rtype) }}
+                                    </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                {{ Uform.submit(class = "btn btn-info") }}
+                              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+
+              </td>
+
+              <td>
+                  <button class="btn btn-sm btn-info">Discharge</button>
+              </td>
+
+              <td>
+                  <!-- Button trigger modal - Delete Operation -->
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeletePatient">Delete</button>
+                  <!-- Modal -->
+                    <div class="modal fade" id="DeletePatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel4">Delete Patient's Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form action="{{ url_for('delete_patient', p=p) }}" method="POST">
+                              <div class="modal-body">
+                                      <input type="hidden" name="patient_id" value="{{ p.ws_pat_id }}">
+                                      <div class="card-content p-2">
+                                          <p><b>Patient ID :</b>{{ p.ws_pat_id }}</p>
+                                            <p><b>SSN ID :</b>{{ p.ws_ssn }}</p>
+                                            <p><b>Name :</b>{{ p.ws_pat_name }}</p>
+                                            <p><b>Address :</b>{{ p.ws_adrs }}</p>
+                                            <p><b>State :</b>{{ p.ws_state }}</p>
+                                            <p><b>City :</b>{{ p.ws_city }}</p>
+                                            <p><b>Age :</b>{{ p.ws_age }}</p>
+                                            <p><b>Date of Joining :</b>{{ p.ws_doj }}</p>
+                                            <p><b>Room type :</b>{{ p.ws_rtype }}</p>
+                                      </div>
+
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-danger" >Confirm</button>
+                              </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+              </td>
+            </tr>
+
+          {% else %}
+            <h3>No users found</h3>
+
+          {% endfor %}
+        </tbody>
+        </table>
+    </div>
+
+
+<script>
+    $(document).ready( function () {
+    $('#myTable').DataTable({searching: false, paging: true, info: true, ordering: false, lengthMenu: [5,10,15]});
+} );
+    </script>
+{% endif %}
+
+
+{% endblock %}

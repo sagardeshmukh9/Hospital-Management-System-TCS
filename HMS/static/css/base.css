@@ -1,0 +1,15 @@
+.search{
+margin-bottom : 5px;
+margin-right : 3px;
+}
+
+#table{
+    margin-bottom : 0px;
+}
+
+.page-item.active .page-link {
+    z-index: 1;
+    color: #fff;
+    background-color: #fff;
+    border-color: #007bff;
+}

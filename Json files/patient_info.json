@@ -1,0 +1,4 @@
+[
+{"ws_ssn":"abcd", "ws_pat_id":"acbdh", "ws_pat_name":"John", "ws_adrs":"street 4", "ws_age":23, "ws_doj":2020-03-12, "ws_rtype":"general"},
+{"ws_ssn":"ahfng", "ws_pat_id":"sdfdk", "ws_pat_name":"olly", "ws_adrs":"street 43", "ws_age":25, "ws_doj":2020-04-12, "ws_rtype":"general"},
+]
