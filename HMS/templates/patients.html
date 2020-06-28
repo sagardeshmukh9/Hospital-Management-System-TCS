@@ -21,6 +21,10 @@
 }
 .row{
     font-size: 15px;
+ }
+.modal-dialog-scrollable .modal-body {
+    overflow-y: auto;
+    height: 400px;
 }
 </style>
 
@@ -100,7 +104,7 @@
 <div class="container float-left mx-5" style="width:800px">
     <div class="card m-0">
         <div class="card-header p-0">
-            <center><b><p>Patient ID : {{ pat.ws_pat_id }}</p></b></center>
+            <center><b><p style="margin-top:10px;margin-bottom:10px;">Patient ID : {{ pat.ws_pat_id }}</p></b></center>
         </div>
         <div class="card-content p-2">
             <p>SSN ID :{{ pat.ws_ssn }}</p>
@@ -240,6 +244,7 @@
             </tr>
           </thead>
           <tbody>
+          {% set arr = [1,2,3,4,5] %}
           {% for p in patients %}
             <tr>
               <th>{{ p.ws_ssn }}</th>
@@ -251,11 +256,11 @@
               <td>{{ p.ws_rtype }}</td>
               <td>
                   <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal">
+                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#exampleModal-{{ p.ws_pat_id }}">
                       Update
                     </button>
                   <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="exampleModal-{{ p.ws_pat_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -318,9 +323,9 @@
 
               <td>
                   <!-- Button trigger modal - Delete Operation -->
-                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeletePatient">Delete</button>
+                    <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#DeletePatient-{{ p.ws_pat_id }}">Delete</button>
                   <!-- Modal -->
-                    <div class="modal fade" id="DeletePatient" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
+                    <div class="modal fade" id="DeletePatient-{{ p.ws_pat_id }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel4" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                           <div class="modal-header">

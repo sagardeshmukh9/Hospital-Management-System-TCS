@@ -18,7 +18,7 @@ class UpdateForm(FlaskForm):
     ws_city = StringField("City", validators=[Length(max=50)])
     ws_age = IntegerField("Age")
     ws_doj = DateField("Date_of_joining")
-    ws_rtype = StringField("Room_type")
+    ws_rtype = SelectField("Room_type", choices=[("General Ward", "General Ward"), ("Semi sharing", "Semi sharing"),("Single room", "Single room")])
     submit = SubmitField("Update")
 
 class CreateForm(FlaskForm):

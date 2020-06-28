@@ -1,7 +1,7 @@
 from HMS import app
 from flask import render_template, flash, session, redirect, url_for, request
 from HMS.forms import LoginForm, UpdateForm, CreateForm
-from HMS.models import Userstore, Patient_info
+from HMS.models import Userstore, Patient_info, Medicine_info, Medicine_issued
 
 @app.route("/", methods=["GET","POST"])
 def home():
@@ -37,7 +37,7 @@ def patients_info():
         Uform = UpdateForm()
         Cform = CreateForm()
         patients = Patient_info.objects(ws_status="active").all()
-        return render_template("patients.html", patients=patients, Uform = Uform, Cform=Cform)
+        return render_template("patients.html", patients=patients, Cform=Cform, Uform = Uform)
     else:
         flash("You need to log in to view the requested page","warning")
         return redirect(url_for("home"))
@@ -84,7 +84,7 @@ def update_patient_info():
 
         Patient_info.objects(ws_pat_id = Uform.ws_pat_id.data).update(ws_pat_name=ws_pat_name, ws_adrs=ws_adrs,ws_state=ws_state,ws_city=ws_city, ws_age=ws_age, ws_doj=ws_doj, ws_rtype=ws_rtype)
         flash("Patient info updated successfully", "success")
-    return redirect(url_for("patients_info"))
+    return redirect(url_for("patients_info", Uform=Uform))
 
 
 @app.route("/logged_in/patients_info/delete", methods=["GET","POST"])
@@ -125,3 +125,17 @@ def search():
 def logout():
     session['username'] = None
     return redirect(url_for("home"))
+
+#
+# @app.route("/search",methods=["GET","POST"])
+# def search1():
+#     if request.method == "POST":
+#         patient = Patient_info.objects(ws_pat_id = patient_id).first()
+#         med_issued = Medicine_issued.objects(ws_pat_id = patient_id).all()
+#         meds_list=[]
+#         for m in med_issued:
+#             meds_list.append(Medicine_info.objects(ws_med_id = m.ws_med_id).first())
+#
+#
+#         dictionary = {"patient_id":patient.ws_pat_id, "ssn_id":patient.ws_ssn, "Name":patient.ws_pat_name, "Age":patient.ws_age, "List_of_meds":meds_list}
+#     return render_template("display.html",dictionary=dictionary)
